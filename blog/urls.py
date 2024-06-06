@@ -18,4 +18,7 @@ urlpatterns = [
     # path('delete/<int:pk>/', views.delete_post, name='delete_post'),  # function
     path('delete/<int:pk>/', views.DeletePostView.as_view(), name='delete_post'),  # class based view
 
+    # search box
+    path('search/', views.search_posts, name='search_posts'),
+
 ]

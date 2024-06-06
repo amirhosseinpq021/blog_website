@@ -6,6 +6,9 @@ from django.shortcuts import get_object_or_404
 from django.views import generic
 from django.urls import reverse_lazy
 
+from django.db.models import Q
+
+
 # Create your views here.
 
 # _________________________________________________________________________________________________________________
@@ -98,3 +101,15 @@ class DeletePostView(generic.DeleteView):
     template_name = 'blog/delete_post.html'
     success_url = reverse_lazy('posts_list')
 
+
+def search_posts(request):
+    keyword = request.GET.get('keyword')
+
+    blog_search = Post.objects.filter(
+        Q(title__icontains=keyword) | Q(text__icontains=keyword))
+
+    context = {
+        'blogs': blog_search,
+        'keyword': keyword,
+    }
+    return render(request, 'blog/search.html', context)

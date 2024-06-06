@@ -8,6 +8,7 @@
 
 
 {% block content %}
+
     <div class="container mt-4">
         <div class="row">
             <div class="col-9">
@@ -19,7 +20,7 @@
                     <div class="card shadow-sm my-3">
                         <div class="card-body">
                             <h5 class="card-title">{{ post.title }}</h5>
-                            <h6 class="card-title">{{ post.date_created | timesince}} Ago </h6>
+                            <h6 class="card-title">{{ post.date_created | timesince }} Ago </h6>
                             <h5 class="card-title">status | {{ post.status }}</h5>
                             <h6 class="card-subtitle mb-2 text-muted small py-2">BY : {{ post.author }}</h6>
                             <p class="card-text py-3">
@@ -27,8 +28,8 @@
                             </p>
                             <a href="{% url 'post_detail' post.pk %}" class="btn btn-sm btn-success">Read More</a>
                             {% if user.username == post.author.username %}
-                            <a href="{% url 'edit_post' post.pk %}" class="btn btn-sm btn-warning">Edit Post</a>
-                            <a href="{% url 'delete_post' post.pk %}" class="btn btn-sm btn-info">Delete Post</a>
+                                <a href="{% url 'edit_post' post.pk %}" class="btn btn-sm btn-warning">Edit Post</a>
+                                <a href="{% url 'delete_post' post.pk %}" class="btn btn-sm btn-info">Delete Post</a>
                             {% endif %}
 
 
@@ -52,7 +53,20 @@
                     </div>
                 </div>
 
+                    <!--search box-->
+                    <h3 class="sidebar-title">Search</h3>
+                    <div class="sidebar-item search-form">
+
+                        <form action="{% url 'search_posts' %}" method="GET">
+                            <input type="text" name="keyword">
+                            <button type="submit">search</button>
+                        </form>
+
+                    </div>
+
+
             </div>
+
+
         </div>
-    </div>
-{% endblock content%}
+{% endblock content %}
