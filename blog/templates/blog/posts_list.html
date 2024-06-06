@@ -26,11 +26,10 @@
                                 {{ post.text | truncatewords:30 }}
                             </p>
                             <a href="{% url 'post_detail' post.pk %}" class="btn btn-sm btn-success">Read More</a>
-
-
+                            {% if user.username == post.author.username %}
                             <a href="{% url 'edit_post' post.pk %}" class="btn btn-sm btn-warning">Edit Post</a>
                             <a href="{% url 'delete_post' post.pk %}" class="btn btn-sm btn-info">Delete Post</a>
-
+                            {% endif %}
 
 
                         </div>

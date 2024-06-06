@@ -21,8 +21,12 @@
                 </div>
 
                 <div>
-                    <a href="{% url 'edit_post' post_details.pk %}" class="btn btn-sm btn-warning">Edit Post</a>
-                    <a href="{% url 'delete_post' post_details.pk %}" class="btn btn-sm btn-info">Delete Post</a>
+                    {% if user.username == post_details.author.username %}
+
+                        <a href="{% url 'edit_post' post_details.pk %}" class="btn btn-sm btn-warning">Edit Post</a>
+                        <a href="{% url 'delete_post' post_details.pk %}" class="btn btn-sm btn-info">Delete Post</a>
+                    {% endif %}
+
                 </div>
 
                 <div class="card shadow my-3 p-5">
