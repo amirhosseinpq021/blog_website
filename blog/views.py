@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Post
-from .forms import AddPostForm
+from .forms import AddPostForm, EditPostForm
 from django.shortcuts import get_object_or_404
 
 
@@ -38,15 +38,16 @@ def add_post(request):
     return render(request, 'blog/add_post.html', context)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+def edit_post(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.method == "POST":
+        form = EditPostForm(request.POST or None, instance=post)
+        if form.is_valid():
+            form.save()
+            return redirect('posts_list')
+    else:
+        form = EditPostForm(instance=post)
+    context = {
+        'form': form,
+    }
+    return render(request, 'blog/add_post.html', context)
