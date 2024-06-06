@@ -4,7 +4,7 @@ from .forms import AddPostForm, EditPostForm
 from django.shortcuts import get_object_or_404
 
 from django.views import generic
-
+from django.urls import reverse_lazy
 
 # Create your views here.
 
@@ -63,29 +63,38 @@ class AddPostView(generic.CreateView):
     context_object_name = 'form'
 
 
+# _________________________________________________________________________________________________________________
+# def edit_post(request, pk):
+#     post = get_object_or_404(Post, pk=pk)
+#     if request.method == "POST":
+#         form = EditPostForm(request.POST or None, instance=post)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('posts_list')
+#     else:
+#         form = EditPostForm(instance=post)
+#     context = {
+#         'form': form,
+#     }
+#     return render(request, 'blog/add_post.html', context)
 
 
-
-
+class EditPostView(generic.UpdateView):
+    model = Post
+    form_class = EditPostForm
+    template_name = 'blog/add_post.html'
+    context_object_name = 'form'
 
 
 # _________________________________________________________________________________________________________________
-def edit_post(request, pk):
-    post = get_object_or_404(Post, pk=pk)
-    if request.method == "POST":
-        form = EditPostForm(request.POST or None, instance=post)
-        if form.is_valid():
-            form.save()
-            return redirect('posts_list')
-    else:
-        form = EditPostForm(instance=post)
-    context = {
-        'form': form,
-    }
-    return render(request, 'blog/add_post.html', context)
+# def delete_post(request, pk):
+#     post = get_object_or_404(Post, pk=pk)
+#     post.delete()
+#     return redirect('posts_list')
 
 
-def delete_post(request, pk):
-    post = get_object_or_404(Post, pk=pk)
-    post.delete()
-    return redirect('posts_list')
+class DeletePostView(generic.DeleteView):
+    model = Post
+    template_name = 'blog/delete_post.html'
+    success_url = reverse_lazy('posts_list')
+
