@@ -51,3 +51,10 @@ def edit_post(request, pk):
         'form': form,
     }
     return render(request, 'blog/add_post.html', context)
+
+
+def delete_post(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    post.delete()
+    return redirect('posts_list')
+
