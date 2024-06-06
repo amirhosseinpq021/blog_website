@@ -3,18 +3,30 @@ from .models import Post
 from .forms import AddPostForm, EditPostForm
 from django.shortcuts import get_object_or_404
 
+from django.views import generic
+
 
 # Create your views here.
 
+# _________________________________________________________________________________________________________________
 
-def posts_list(request):
-    posts = Post.objects.all().order_by('-date_created').filter(status='pub')
-    context = {
-        'posts_list': posts,
-    }
-    return render(request, 'blog/posts_list.html', context)
+# def posts_list(request):
+#     posts = Post.objects.all().order_by('-date_created').filter(status='pub')
+#     context = {
+#         'posts_list': posts,
+#     }
+#     return render(request, 'blog/posts_list.html', context)
 
 
+class PostsListView(generic.ListView):
+    template_name = 'blog/posts_list.html'
+    context_object_name = 'posts_list'
+
+    def get_queryset(self):  # override this method
+        return Post.objects.all().order_by('-date_created').filter(status='pub')
+
+
+# _________________________________________________________________________________________________________________
 def post_detail(request, pk):
     post_details = get_object_or_404(Post, pk=pk)
     context = {
@@ -57,4 +69,3 @@ def delete_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
     post.delete()
     return redirect('posts_list')
-
