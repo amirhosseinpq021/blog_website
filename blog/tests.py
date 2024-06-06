@@ -11,9 +11,16 @@ class BlogPostTest(TestCase):
         self.user = User.objects.create(username='amirhossein')
 
         self.post1 = Post.objects.create(
-            title='title',
-            text='this is text',
+            title='title1',
+            text='this is text1',
             status=Post.STATUS_CHOICES[0][0],
+            author=self.user
+        )
+
+        self.post2 = Post.objects.create(
+            title='title2',
+            text='this is text2',
+            status=Post.STATUS_CHOICES[1][0],
             author=self.user
         )
 
@@ -42,8 +49,8 @@ class BlogPostTest(TestCase):
 
     # 5
     # تست بر اساس url صفحه دیتل
-    def test_post_detail_url_by_name(self):
-        response = self.client.ge(reverse('post_detail', args=[self.post1.id]))
+    def test_post_detail_url(self):
+        response = self.client.get(f'/posts/{self.post1.id}/')
         self.assertEqual(response.status_code, 200)
 
     # 6
@@ -58,6 +65,9 @@ class BlogPostTest(TestCase):
         response = self.client.get(reverse('post_detail', args=[100000]))
         self.assertEqual(response.status_code, 404)
 
-
-
-
+    # 8
+    # تست اینکخ پست های پیش نویس در صفحه نباشد
+    def test_draf_post_not_show_on_posts_list(self):
+        response = self.client.get(reverse('posts_list'))
+        self.assertContains(response, self.post1.title)
+        self.assertNotContains(response, self.post2.title)
