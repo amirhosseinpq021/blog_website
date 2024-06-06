@@ -34,7 +34,7 @@
                 Welcome {{ user.username }}
             {% else %}
                 <a href="{% url 'login' %}"><button  type="submit" class="btn btn-warning" >login</button></a>
-                <a href=""><button  type="submit" class="btn btn-warning" >signup</button></a>
+                <a href="{% url 'signup' %}"><button  type="submit" class="btn btn-warning" >signup</button></a>
             {% endif %}
 
 
