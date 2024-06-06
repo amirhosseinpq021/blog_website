@@ -27,14 +27,21 @@ class PostsListView(generic.ListView):
 
 
 # _________________________________________________________________________________________________________________
-def post_detail(request, pk):
-    post_details = get_object_or_404(Post, pk=pk)
-    context = {
-        'post_details': post_details,
-    }
-    return render(request, 'blog/post_detail.html', context)
+# def post_detail(request, pk):
+#     post_details = get_object_or_404(Post, pk=pk)
+#     context = {
+#         'post_details': post_details,
+#     }
+#     return render(request, 'blog/post_detail.html', context)
 
 
+class PostDetailView(generic.DetailView):
+    model = Post
+    template_name = 'blog/post_detail.html'
+    context_object_name = 'post_details'
+
+
+# _________________________________________________________________________________________________________________
 def add_post(request):
     if request.method == 'POST':
         form = AddPostForm(request.POST)
