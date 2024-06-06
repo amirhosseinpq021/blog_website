@@ -102,11 +102,13 @@ class DeletePostView(generic.DeleteView):
     success_url = reverse_lazy('posts_list')
 
 
+# _________________________________________________________________________________________________________________
 def search_posts(request):
     keyword = request.GET.get('keyword')
 
     blog_search = Post.objects.filter(
-        Q(title__icontains=keyword) | Q(text__icontains=keyword))
+        Q(title__icontains=keyword) | Q(text__icontains=keyword) | Q(author__username__icontains=keyword) |
+        Q(status__icontains=keyword))
 
     context = {
         'blogs': blog_search,
