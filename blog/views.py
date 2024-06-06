@@ -42,21 +42,34 @@ class PostDetailView(generic.DetailView):
 
 
 # _________________________________________________________________________________________________________________
-def add_post(request):
-    if request.method == 'POST':
-        form = AddPostForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('posts_list')
-    else:
-        form = AddPostForm()
+# def add_post(request):
+#     if request.method == 'POST':
+#         form = AddPostForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('posts_list')
+#     else:
+#         form = AddPostForm()
+#
+#     context = {
+#         'form': form,
+#     }
+#     return render(request, 'blog/add_post.html', context)
 
-    context = {
-        'form': form,
-    }
-    return render(request, 'blog/add_post.html', context)
+
+class AddPostView(generic.CreateView):
+    form_class = AddPostForm
+    template_name = 'blog/add_post.html'
+    context_object_name = 'form'
 
 
+
+
+
+
+
+
+# _________________________________________________________________________________________________________________
 def edit_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == "POST":
