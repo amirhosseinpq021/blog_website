@@ -5,10 +5,10 @@ from .models import Post
 class AddPostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = '__all__'
+        fields = ('title', 'text', 'status')
 
 
 class EditPostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = '__all__'
+        fields = ('title', 'text', 'status')

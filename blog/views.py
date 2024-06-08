@@ -1,3 +1,5 @@
+from django.contrib import auth
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from .models import Post
 from .forms import AddPostForm, EditPostForm
@@ -5,8 +7,11 @@ from django.shortcuts import get_object_or_404
 
 from django.views import generic
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.db.models import Q
+
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 # Create your views here.
@@ -21,12 +26,13 @@ from django.db.models import Q
 #     return render(request, 'blog/posts_list.html', context)
 
 
-class PostsListView(generic.ListView):
+class PostsListView(LoginRequiredMixin, generic.ListView):
     template_name = 'blog/posts_list.html'
     context_object_name = 'posts_list'
 
     def get_queryset(self):  # override this method
         return Post.objects.all().order_by('-date_created').filter(status='pub')
+
 
 
 # _________________________________________________________________________________________________________________
@@ -38,7 +44,7 @@ class PostsListView(generic.ListView):
 #     return render(request, 'blog/post_detail.html', context)
 
 
-class PostDetailView(generic.DetailView):
+class PostDetailView(LoginRequiredMixin, generic.DetailView):
     model = Post
     template_name = 'blog/post_detail.html'
     context_object_name = 'post_details'
@@ -60,10 +66,15 @@ class PostDetailView(generic.DetailView):
 #     return render(request, 'blog/add_post.html', context)
 
 
-class AddPostView(generic.CreateView):
+class AddPostView(LoginRequiredMixin, generic.CreateView):
     form_class = AddPostForm
     template_name = 'blog/add_post.html'
     context_object_name = 'form'
+
+
+    def form_valid(self, form):  # new
+        form.instance.author = self.request.user
+        return super().form_valid(form)
 
 
 # _________________________________________________________________________________________________________________
@@ -115,3 +126,5 @@ def search_posts(request):
         'keyword': keyword,
     }
     return render(request, 'blog/search.html', context)
+# _________________________________________________________________________________________________________________
+
