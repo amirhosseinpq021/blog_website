@@ -6,7 +6,7 @@ from .forms import AddPostForm, EditPostForm
 from django.shortcuts import get_object_or_404
 
 from django.views import generic
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.db.models import Q
@@ -110,8 +110,10 @@ class EditPostView(generic.UpdateView):
 class DeletePostView(generic.DeleteView):
     model = Post
     template_name = 'blog/delete_post.html'
-    success_url = reverse_lazy('posts_list')
+    # success_url = reverse_lazy('posts_list') # راهکار 1
 
+    def get_success_url(self): # راهکار 2
+        return reverse('posts_list')
 
 # _________________________________________________________________________________________________________________
 def search_posts(request):
